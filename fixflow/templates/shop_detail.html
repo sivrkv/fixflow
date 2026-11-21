@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h1>{{ shop.name }}</h1>
+  <p>📍 {{ shop.address }} &nbsp; 📞 {{ shop.phone }}</p>
+  <p>Repairs: {{ shop.device_labels }}</p>
+  <p>Open Mon-Sat, drop-off 9:00-18:00. {% if shop.express_fee > 0 %}⚡ Express service: +₹{{ shop.express_fee }}{% else %}No express service.{% endif %}</p>
+</div>
+{% if can_request %}
+  <div class="card">
+    <h2>Request a repair</h2>
+    <form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn">Send request</button></form>
+  </div>
+{% elif user.is_authenticated %}
+  <p class="muted">Only customer accounts can send repair requests.</p>
+{% else %}
+  <p><a href="{% url 'login' %}?next={{ request.path }}">Login</a> or <a href="{% url 'register' %}">register</a> as a customer to request a repair.</p>
+{% endif %}
+{% endblock %}

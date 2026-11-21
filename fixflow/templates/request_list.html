@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{% if user.profile.role == 'shop' %}Shop dashboard{% else %}My repairs{% endif %}</h1>
+{% if user.profile.role == 'shop' and not user.shop %}
+  <p class="msg warning">Set up your shop first: <a href="{% url 'shop_setup' %}">open shop details</a>.</p>
+{% endif %}
+<h2>Active</h2>
+{% include "_job_table.html" with jobs=active %}
+<h2>Closed</h2>
+{% include "_job_table.html" with jobs=closed %}
+{% endblock %}

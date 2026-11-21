@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card narrow">
+  <h1>{{ title }}</h1>
+  <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn">{{ button|default:"Save" }}</button>
+  </form>
+</div>
+{% endblock %}

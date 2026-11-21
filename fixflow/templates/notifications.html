@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Notifications</h1>
+{% for n in items %}
+  <div class="card {% if not n.is_read %}unread{% endif %}">
+    {{ n.message }} <span class="muted">({{ n.created_at|date:"d M, H:i" }})</span>
+    {% if n.request_id %}<a href="{% url 'request_detail' n.request_id %}">Open</a>{% endif %}
+  </div>
+{% empty %}<p class="muted">No notifications yet.</p>{% endfor %}
+{% endblock %}

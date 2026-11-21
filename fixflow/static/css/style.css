@@ -1,0 +1,22 @@
+*{box-sizing:border-box}body{font-family:system-ui,sans-serif;margin:0;background:#f4f6f8;color:#222}
+nav{display:flex;gap:16px;align-items:center;background:#1f3a5f;padding:12px 20px}
+nav a,nav .link{color:#fff;text-decoration:none}.brand{font-weight:700;margin-right:auto}
+main{max-width:900px;margin:20px auto;padding:0 16px}
+.card{background:#fff;border-radius:8px;padding:16px;margin:12px 0;box-shadow:0 1px 3px #0002}
+.card.unread{border-left:4px solid #2e7d32}.narrow{max-width:460px;margin:30px auto}
+input,select,textarea{width:100%;padding:8px;margin:4px 0;border:1px solid #bbb;border-radius:6px;font:inherit}
+input[type=checkbox]{width:auto}ul{list-style:none;padding:0}
+.btn{background:#1f3a5f;color:#fff;border:0;padding:9px 16px;border-radius:6px;cursor:pointer}
+.btn.ok{background:#2e7d32}.btn.danger{background:#c62828}
+.link{background:none;border:0;cursor:pointer;font:inherit;padding:0}.inline{display:inline;margin:0}
+.row{display:flex;gap:8px;align-items:center;margin:8px 0}.row input{flex:1}.row select{width:auto}
+.search{margin:8px 0}table{width:100%;border-collapse:collapse;background:#fff}
+th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;vertical-align:top}.kv th{width:180px}
+.tag{background:#fff3cd;padding:2px 8px;border-radius:12px;font-size:.8em}
+.st{padding:3px 10px;border-radius:12px;background:#e0e0e0;font-size:.85em}
+.st-pending,.st-awaiting_approval{background:#fff3cd}.st-accepted,.st-in_repair,.st-received{background:#d6e9ff}
+.st-ready,.st-completed{background:#d4edda}.st-rejected,.st-cancelled,.st-declined,.st-unrepairable,.st-returned{background:#f8d7da}
+.msg{padding:10px 14px;border-radius:6px;margin:8px 0;background:#e3f2fd}.msg.success{background:#d4edda}
+.msg.error{background:#f8d7da}.msg.warning{background:#fff3cd}.muted{color:#777}
+.badge{background:#e53935;color:#fff;border-radius:10px;padding:0 7px;font-size:.75em;margin-left:3px}.badge[hidden]{display:none}
+.helptext{display:block;font-size:.8em;color:#777}.errorlist{color:#c62828;padding:0;margin:2px 0}

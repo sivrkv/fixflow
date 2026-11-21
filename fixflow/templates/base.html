@@ -1,0 +1,30 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}FixFlow{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<nav>
+  <a class="brand" href="{% url 'shop_list' %}">🔧 FixFlow</a>
+  {% if user.is_authenticated %}
+    <a href="{% url 'request_list' %}">{% if user.profile.role == 'shop' %}Dashboard{% else %}My repairs{% endif %}</a>
+    {% if user.profile.role == 'shop' %}<a href="{% url 'shop_setup' %}">My shop</a>{% endif %}
+    <a href="{% url 'notifications' %}">🔔<span id="badge" class="badge" hidden></span></a>
+    <form method="post" action="{% url 'logout' %}" class="inline">{% csrf_token %}
+      <button class="link">Logout ({{ user.username }})</button></form>
+  {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'register' %}">Register</a>
+  {% endif %}
+</nav>
+<main>
+  {% for m in messages %}<div class="msg {{ m.tags }}">{{ m }}</div>{% endfor %}
+  {% block content %}{% endblock %}
+</main>
+<script src="{% static 'js/app.js' %}" data-unread-url="{% url 'api_unread' %}"></script>
+</body>
+</html>

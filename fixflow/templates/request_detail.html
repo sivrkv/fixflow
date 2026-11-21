@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h1>#{{ job.pk }} - {{ job.device_name }} {% if job.express %}<span class="tag">⚡ Express</span>{% endif %}</h1>
+  <p><span class="st st-{{ job.status }}">{{ job.get_status_display }}</span></p>
+  {% if job.status == 'awaiting_approval' and role == 'customer' %}
+    <p class="msg warning">The shop needs your decision on the quote below. You can also call them: {{ job.shop.phone }}</p>
+  {% endif %}
+  <table class="kv">
+    <tr><th>Device type</th><td>{{ job.get_device_type_display }}</td></tr>
+    <tr><th>Problem</th><td>{{ job.problem|linebreaksbr }}</td></tr>
+    <tr><th>Drop-off slot</th><td>{{ job.drop_slot|date:"D d M Y, H:i" }}</td></tr>
+    {% if role == 'shop' %}
+      <tr><th>Customer</th><td>{{ job.customer.username }} - 📞 {{ job.customer.profile.phone }}</td></tr>
+      <tr><th>Customer budget limit</th><td>{% if job.max_budget %}₹{{ job.max_budget }}{% else %}not set{% endif %}</td></tr>
+    {% else %}
+      <tr><th>Shop</th><td>{{ job.shop.name }} - {{ job.shop.address }} - 📞 {{ job.shop.phone }}</td></tr>
+    {% endif %}
+    {% if job.diagnosis %}<tr><th>Diagnosis</th><td>{{ job.diagnosis|linebreaksbr }}</td></tr>{% endif %}
+    {% if job.quoted_cost is not None %}<tr><th>Quote</th><td>₹{{ job.quoted_cost }} - about {{ job.estimated_days }} day(s)</td></tr>{% endif %}
+    {% if job.express %}<tr><th>Express fee</th><td>₹{{ job.express_fee }}</td></tr>{% endif %}
+    {% if job.quoted_cost is not None %}<tr><th>Total</th><td><strong>₹{{ job.total_price }}</strong> {% if job.is_paid %}(paid){% else %}(pay at the shop){% endif %}</td></tr>{% endif %}
+    {% if job.shop_note %}<tr><th>Shop note</th><td>{{ job.shop_note }}</td></tr>{% endif %}
+  </table>
+</div>
+
+{% if actions %}
+<div class="card">
+  <h2>Actions</h2>
+  {% for a in actions %}
+  <form method="post" action="{% url 'request_action' job.pk a.name %}" class="row" data-confirm="Are you sure?">
+    {% csrf_token %}
+    {% if a.needs_note %}<input name="note" placeholder="Reason (required)" required maxlength="300">{% endif %}
+    <button class="btn {{ a.style }}">{{ a.label }}</button>
+  </form>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if diagnose_form %}
+<div class="card">
+  <h2>{% if job.status == 'received' %}Send diagnosis & quote{% else %}Update / correct the quote{% endif %}</h2>
+  <p class="muted">If the quote is within the customer's budget the repair starts at once; otherwise the customer is asked to approve.</p>
+  <form method="post" action="{% url 'request_diagnose' job.pk %}">{% csrf_token %}{{ diagnose_form.as_p }}<button class="btn">Send to customer</button></form>
+</div>
+{% endif %}
+{% endblock %}

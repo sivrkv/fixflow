@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Find a repair shop</h1>
+<form method="get" class="row">
+  <select name="device">
+    <option value="">Any device</option>
+    {% for key, label in devices %}<option value="{{ key }}" {% if key == picked %}selected{% endif %}>{{ label }}</option>{% endfor %}
+  </select>
+  <button class="btn">Filter</button>
+</form>
+<input id="live" class="search" placeholder="Search these shops by name or area...">
+{% for s in shops %}
+  <div class="card shop">
+    <h3><a href="{% url 'shop_detail' s.pk %}">{{ s.name }}</a></h3>
+    <p>📍 {{ s.address }}</p>
+    <p>Repairs: {{ s.device_labels }}</p>
+    {% if s.express_fee > 0 %}<span class="tag">⚡ Express +₹{{ s.express_fee }}</span>{% endif %}
+  </div>
+{% empty %}
+  <p>No shops match yet.</p>
+{% endfor %}
+{% endblock %}

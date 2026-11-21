@@ -1,0 +1,14 @@
+{% if jobs %}
+<table>
+  <tr><th>#</th><th>Device</th><th>{% if user.profile.role == 'shop' %}Customer{% else %}Shop{% endif %}</th><th>Drop-off</th><th>Status</th></tr>
+  {% for j in jobs %}
+  <tr>
+    <td><a href="{% url 'request_detail' j.pk %}">#{{ j.pk }}</a></td>
+    <td>{{ j.device_name }} {% if j.express %}<span class="tag">⚡ Express</span>{% endif %}</td>
+    <td>{% if user.profile.role == 'shop' %}{{ j.customer.username }}{% else %}{{ j.shop.name }}{% endif %}</td>
+    <td>{{ j.drop_slot|date:"D d M, H:i" }}</td>
+    <td><span class="st st-{{ j.status }}">{{ j.get_status_display }}</span></td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}<p class="muted">Nothing here.</p>{% endif %}
